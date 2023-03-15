@@ -12,8 +12,7 @@ import com.example.demo.entity.Result;
 
 public interface ResultRepository extends JpaRepository<Result, Integer> {
 
-	@Query(value = "select * from result where user_id =(select id from user_table where user_name = ?1)", nativeQuery = true)
-	public List<Result> findByUserName(String userName);
-
+	@Query("SELECT r FROM Result r WHERE r.user.userName = :userName")
+	public List<Result> findByUserName(String userName);	
 
 }

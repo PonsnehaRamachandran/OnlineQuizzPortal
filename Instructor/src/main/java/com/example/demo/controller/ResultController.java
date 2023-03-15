@@ -33,33 +33,23 @@ public class ResultController {
 	}
 
 	// getting all results of a student
-//	@GetMapping("/api/user/{userName}/results")
-//	public ResponseEntity<List<Result>> getAllResultsOfStudent(@PathVariable("userName") String userName)
-//			throws ResultException {
-//		RestTemplate restTemplate = new RestTemplate();
-//		restTemplate.getForObject("http://localhost:8081/api/user/{userName}", User.class);
-//		List<Result> results = resultService.getResult(userName);
-//		return new ResponseEntity<>(results, HttpStatus.OK);
-//	}
 	@GetMapping("/api/user/{userName}/results")
 	public ResponseEntity<List<Result>> getAllResultsOfStudent(@PathVariable("userName") String userName)
 			throws ResultException {
 		RestTemplate restTemplate = new RestTemplate();
-	    User user = restTemplate.getForObject("http://localhost:8082/api/user/" + userName, User.class);
-	    System.out.println(user);
+		User user = restTemplate.getForObject("http://localhost:8082/api/user/" + userName, User.class);
+		System.out.println(user);
 		List<Result> results = resultService.getResult(user.getUserName());
 		return new ResponseEntity<>(results, HttpStatus.OK);
 	}
-
 
 	// adding new result
 	@PostMapping(value = "/api/results", consumes = { "application/json" })
 	public ResponseEntity<?> postNewResult(@RequestBody Result result) throws ResultException {
 		try {
-		Result newResult = resultService.addNewResult(result);
-		return new ResponseEntity<>(newResult, HttpStatus.CREATED);
-		}
-		catch (ResultException e) {
+			Result newResult = resultService.addNewResult(result);
+			return new ResponseEntity<>(newResult, HttpStatus.CREATED);
+		} catch (ResultException e) {
 			ResultException ex = new ResultException(e.getMessage());
 			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 
